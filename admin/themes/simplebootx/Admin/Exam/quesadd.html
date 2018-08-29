@@ -1,0 +1,510 @@
+<admintpl file="header" />
+<style type="text/css">
+	#optionInfo .controls label{
+		margin-bottom: 12px;
+	}
+	#optionInfo .controls label span{
+		margin: 0 8px;
+	}
+	.preview_img{
+		height:36px !important;
+	}
+	.judgment{
+		display:inline;
+		height: 30px;
+		line-height: 30px;
+	}
+	.judgment input{
+		margin-top: 0;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Exam/question')}">试题库</a></li>
+			<li class="active"><a href="{:U('Exam/quesadd')}">试题添加</a></li>
+		</ul>
+		<form method="post" id="formInfo" class="form-horizontal">
+			<fieldset id="formField">
+				<div class="control-group">
+					<label class="control-label">题型</label>
+					<div class="controls">
+						<select name="type" id="examType">
+							<option value="1">单选</option>
+							<option value="2" <if condition="$type eq 2">selected</if>>多选</option>
+							<option value="3" <if condition="$type eq 3">selected</if>>判断</option>
+							<option value="4" <if condition="$type eq 4">selected</if>>主观题</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">题目</label>
+					<div class="controls">
+						<input type="text" id="title" maxlength="250" style="width:50%;" placeholder="请输入题目">
+						<input type="hidden" name="imgurl" id="thumb" value="">
+						<a href="javascript:upload_one_image('图片上传','#thumb');">
+							<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="thumb-preview" style="cursor: hand" />
+						</a>
+						<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+					</div>
+				</div>
+				<div class="control-group" id="optionInfo">
+					<if condition="$type neq 4">
+					<label class="control-label">题目选项</label>
+					</if>
+					<div class="controls">
+						<if condition="$type eq 2">
+							<label>
+								<input type="checkbox" name="option" value="A"><span>A</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optiona" value="">
+								<a href="javascript:upload_one_image('图片上传','#optiona');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiona-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optiona-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optiona').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="checkbox" name="option" value="B"><span>B</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optionb" value="">
+								<a href="javascript:upload_one_image('图片上传','#optionb');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionb-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optionb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optionb').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="checkbox" name="option" value="C"><span>C</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optionc" value="">
+								<a href="javascript:upload_one_image('图片上传','#optionc');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionc-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optionc-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optionc').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="checkbox" name="option" value="D"><span>D</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optiond" value="">
+								<a href="javascript:upload_one_image('图片上传','#optiond');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiond-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optiond-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optiond').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="checkbox" name="option" value="E"><span>E</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optione" value="">
+								<a href="javascript:upload_one_image('图片上传','#optione');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optione-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optione-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optione').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="checkbox" name="option" value="F"><span>F</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optionf" value="">
+								<a href="javascript:upload_one_image('图片上传','#optionf');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionf-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optionf-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optionf').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="checkbox" name="option" value="G"><span>G</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optiong" value="">
+								<a href="javascript:upload_one_image('图片上传','#optiong');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiong-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optiong-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optiong').val('');return false;" value="取消图片">
+							</label>
+							<elseif condition="$type eq 3" />
+							<label class="judgment"><input name="judgment" type="radio" value="1" checked /><span>正确</span></label>
+							<label class="judgment"><input name="judgment" type="radio" value="0" /><span>错误</span></label>
+							<elseif condition="$type elt 1" />
+							<label>
+								<input type="radio" name="option" value="A"><span>A</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optiona" value="">
+								<a href="javascript:upload_one_image('图片上传','#optiona');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiona-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optiona-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optiona').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="radio" name="option" value="B"><span>B</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optionb" value="">
+								<a href="javascript:upload_one_image('图片上传','#optionb');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionb-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optionb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optionb').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="radio" name="option" value="C"><span>C</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optionc" value="">
+								<a href="javascript:upload_one_image('图片上传','#optionc');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionc-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optionc-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optionc').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="radio" name="option" value="D"><span>D</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optiond" value="">
+								<a href="javascript:upload_one_image('图片上传','#optiond');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiond-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optiond-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optiond').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="radio" name="option" value="E"><span>E</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optione" value="">
+								<a href="javascript:upload_one_image('图片上传','#optione');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optione-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optione-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optione').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="radio" name="option" value="F"><span>F</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optionf" value="">
+								<a href="javascript:upload_one_image('图片上传','#optionf');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionf-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optionf-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optionf').val('');return false;" value="取消图片">
+							</label>
+							<label>
+								<input type="radio" name="option" value="G"><span>G</span>
+								<input type="text" name="answer" maxlength="250" placeholder="请输入答案">
+								<input type="hidden" name="img" id="optiong" value="">
+								<a href="javascript:upload_one_image('图片上传','#optiong');">
+									<img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiong-preview" style="cursor: hand" />
+								</a>
+								<input type="button" class="btn btn-small" onclick="$('#optiong-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#optiong').val('');return false;" value="取消图片">
+							</label>
+							<else/>
+						</if>
+					</div>
+				</div>
+				<if condition="$type eq 3">
+					<div class="control-group append-info">
+						<label class="control-label">讲解</label>
+						<div class="controls">
+							<textarea name="explain" rows="2" cols="20" id="explain" class="inputtext" style="height: 100px; width: 500px;"></textarea>
+						</div>
+					</div>
+					<elseif condition="$type eq 4" />
+					<div class="control-group append-info">
+						<label class="control-label">参考答案</label>
+						<div class="controls">
+							<textarea name="answer" rows="2" cols="20" id="answer" class="inputtext" style="height: 100px; width: 500px;"></textarea>
+						</div>
+					</div>
+					<else/>
+				</if>
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" id="paperId" value="{$id}">
+				<if condition="$type egt 1">
+					<a class="btn" href="javascript:history.back(-1);">返回</a>
+					<else/>
+					<button type="button" id="nextSubmit" class="btn btn-info">提交并添加下一题</button>
+				</if>
+				<button type="button" id="butSubmit" class="btn btn-info">提交</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+	$("#examType").on('change',function () {
+	    var optionBox = $("#optionInfo");
+	    var fieldForm = $("#formField");
+	    var htmlInfo = '';
+        var htmlField = '';
+        $(".append-info").remove();
+	    if($(this).val() == 1){
+	        htmlInfo = '<label class="control-label">题目选项</label><div class="controls"><label>'+
+                '    <input type="radio" name="option" value="A"><span>A</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optiona" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optiona\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiona-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optiona-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optiona\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="radio" name="option" value="B"><span>B</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optionb" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optionb\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionb-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optionb-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optionb\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="radio" name="option" value="C"><span>C</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optionc" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optionc\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionc-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optionc-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optionc\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="radio" name="option" value="D"><span>D</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optiond" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optiond\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiond-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optiond-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optiond\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="radio" name="option" value="E"><span>E</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optione" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optione\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optione-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optione-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optione\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="radio" name="option" value="F"><span>F</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optionf" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optionf\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionf-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optionf-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optionf\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="radio" name="option" value="G"><span>G</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optiong" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optiong\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiong-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optiong-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optiong\').val(\'\');return false;" value="取消图片">'+
+                '</label></div>';
+            optionBox.html(htmlInfo);
+		}else if($(this).val() == 2){
+	        htmlInfo = '<label class="control-label">题目选项</label><div class="controls"><label>'+
+                '    <input type="checkbox" name="option" value="A"><span>A</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optiona" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optiona\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiona-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optiona-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optiona\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="checkbox" name="option" value="B"><span>B</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optionb" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optionb\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionb-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optionb-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optionb\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="checkbox" name="option" value="C"><span>C</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optionc" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optionc\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionc-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optionc-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optionc\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="checkbox" name="option" value="D"><span>D</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optiond" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optiond\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiond-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optiond-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optiond\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="checkbox" name="option" value="E"><span>E</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optione" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optione\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optione-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optione-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optione\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="checkbox" name="option" value="F"><span>F</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optionf" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optionf\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optionf-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optionf-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optionf\').val(\'\');return false;" value="取消图片">'+
+                '</label>'+
+                '<label>'+
+                '    <input type="checkbox" name="option" value="G"><span>G</span>'+
+                '    <input type="text" name="answer" maxlength="250" placeholder="请输入答案">'+
+                '    <input type="hidden" name="img" id="optiong" value="">'+
+                '    <a href="javascript:upload_one_image(\'图片上传\',\'#optiong\');">'+
+                '        <img src="__TMPL__Public/assets/images/default-thumbnail.png" class="preview_img" id="optiong-preview" style="cursor: hand" />'+
+                '    </a>'+
+                '    <input type="button" class="btn btn-small" onclick="$(\'#optiong-preview\').attr(\'src\',\'__TMPL__Public/assets/images/default-thumbnail.png\');$(\'#optiong\').val(\'\');return false;" value="取消图片">'+
+                '</label></div>';
+            optionBox.html(htmlInfo);
+		}else if($(this).val() == 3){
+		    htmlInfo = '<label class="control-label">题目选项</label><div class="controls"><label class="judgment"><input name="judgment" type="radio" value="1" checked /><span>正确</span></label>'+
+                '<label class="judgment"><input name="judgment" type="radio" value="0" /><span>错误</span></label></div>';
+		    htmlField = '<div class="control-group append-info">'+
+                '    <label class="control-label">讲解</label>'+
+                '    <div class="controls">'+
+                '        <textarea name="explain" rows="2" cols="20" id="explain" class="inputtext" style="height: 100px; width: 500px;"></textarea>'+
+                '    </div>'+
+                '</div>';
+            optionBox.html(htmlInfo);
+            fieldForm.append(htmlField);
+		}else{
+            htmlField = '<div class="control-group append-info">'+
+                '    <label class="control-label">参考答案</label>'+
+                '    <div class="controls">'+
+                '        <textarea name="answer" rows="2" cols="20" id="answer" class="inputtext" style="height: 100px; width: 500px;"></textarea>'+
+                '    </div>'+
+                '</div>';
+            optionBox.empty();
+            fieldForm.append(htmlField);
+		}
+    });
+
+	//提交试题
+    $("#butSubmit").on('click',function () {
+        questionInfo(0);
+    });
+    $("#nextSubmit").on('click',function () {
+        questionInfo(1);
+    });
+
+    //试题详细信息
+    function questionInfo(parameter) {
+        //主体
+        var typeValue = parseInt($("#examType").val());
+        var title = $("#title").val().trim();
+        var imgUrl = $("input[name=imgurl]").val();
+        var paperId = $("#paperId").val();
+        if(typeValue !== 1 && typeValue !== 2 && typeValue !== 3 && typeValue !== 4){
+            $.dialog({id: 'popup', lock: true,icon:"warning", content: '题型参数错误！', time: 2});
+            return false;
+		}
+		if(title == ''){
+            $.dialog({id: 'popup', lock: true,icon:"warning", content: '题目不能为空！', time: 2});
+            return false;
+		}
+        var ajaxData = '';
+
+        //选项
+		var optionBox = $("#optionInfo");
+        if(typeValue === 1){
+            var optionArray = [];
+            var i = 0;
+            optionBox.find('.controls label').each(function () {
+                var inputValue = $(this).find('input[name=answer]').val().trim();
+                var imgValue = $(this).find('input[name=img]').val();
+                if(inputValue != ''){
+                    optionArray[i] = {};
+                    optionArray[i]['answer'] = inputValue;
+                    optionArray[i]['img'] = imgValue;
+                    if($(this).find('input:radio[name="option"]:checked').val()==null){
+                        optionArray[i]['check'] = 0;
+					}else{
+                        optionArray[i]['check'] = 1;
+					}
+                    i++;
+				}
+            });
+            if(optionArray.length == 0){
+                $.dialog({id: 'popup', lock: true,icon:"warning", content: '请设置至少一个选项！', time: 2});
+                return false;
+			}
+			var checkNum = 0;
+			for(var x=0;x<optionArray.length;x++){
+                if(optionArray[x]['check'] == 1){
+                    checkNum++;
+				}
+			}
+			if(checkNum != 1){
+                $.dialog({id: 'popup', lock: true,icon:"warning", content: '请在设置的选项中勾且只勾选一个正确答案！', time: 2});
+                return false;
+			}
+            ajaxData = {id:paperId,type:typeValue,topic:title,imgurl:imgUrl,options:optionArray};
+		}else if(typeValue === 2){
+            var optionArray2 = [];
+            var j = 0;
+            optionBox.find('.controls label').each(function () {
+                var inputValue = $(this).find('input[name=answer]').val().trim();
+                var imgValue = $(this).find('input[name=img]').val();
+                if(inputValue != ''){
+                    optionArray2[j] = {};
+                    optionArray2[j]['answer'] = inputValue;
+                    optionArray2[j]['img'] = imgValue;
+                    if($(this).find('input:checkbox[name="option"]').is(':checked')){
+                        optionArray2[j]['check'] = 1;
+                    }else{
+                        optionArray2[j]['check'] = 0;
+                    }
+                    j++;
+                }
+            });
+            if(optionArray2.length == 0){
+                $.dialog({id: 'popup', lock: true,icon:"warning", content: '请设置至少一个选项！', time: 2});
+                return false;
+            }
+            var checkNum2 = 0;
+            for(var y=0;y<optionArray2.length;y++){
+                if(optionArray2[y]['check'] == 1){
+                    checkNum2++;
+                }
+            }
+            if(checkNum2 <= 0){
+                $.dialog({id: 'popup', lock: true,icon:"warning", content: '请在设置的选项中至少勾选一个正确答案！', time: 2});
+                return false;
+            }
+            ajaxData = {id:paperId,type:typeValue,topic:title,imgurl:imgUrl,options:optionArray2};
+		}else if(typeValue === 3){
+		    var judgment = 1;
+		    if(optionBox.find('input:radio[name="judgment"]:checked').val() != 1){
+		        judgment = 0;
+			}
+			var explain = $("#explain").val().trim();
+            ajaxData = {id:paperId,type:typeValue,topic:title,imgurl:imgUrl,judgment:judgment,explain:explain};
+		}else{
+		    var answer = $("#answer").val().trim();
+            ajaxData = {id:paperId,type:typeValue,topic:title,imgurl:imgUrl,answer:answer};
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: '{:U("Exam/quesadd_post")}',
+			data: ajaxData,
+            dataType:'json',
+            success:function (res) {
+			    if(res.status === 1){
+                    $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                    setTimeout(function(){
+                        if(parameter === 0) {
+                            location.href = res.url;
+                        }else{
+                            location.reload();
+						}
+                    },2000);
+				}else{
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+				}
+            }
+		})
+    }
+</script>
+</body>
+</html>

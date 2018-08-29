@@ -1,0 +1,160 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Course/index')}">在线课程</a></li>
+			<li><a href="{:U('Course/category')}">课程类型</a></li>
+			<li><a href="{:U('Course/banner')}">页面轮播图</a></li>
+		</ul>
+        <form class="well form-search" method="post" action="{:U('Course/index')}">
+            课程:
+            <input type="text" name="title" style="width: 100px;" value="{:I('request.title/s','')}" placeholder="输入课程名称">
+			课程类型:
+			<select name="cate_id">
+				<option value="0">全部</option>
+				<foreach name="cate" item="vc">
+					<option value="{$vc.id}" <if condition="$vc.id eq I('request.cate_id/s','')">selected</if>>{$vc.name}</option>
+				</foreach>
+			</select>
+            <input type="submit" class="btn btn-primary" value="查询" />
+            <a class="btn btn-info" href="{:U('Course/add')}">新增课程</a>
+        </form>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th width="50">ID</th>
+					<th>创建时间</th>
+					<th>课程名称</th>
+					<th>课程类型</th>
+					<th>报名时间</th>
+					<th>排序</th>
+					<th>状态</th>
+					<th width="240">{:L('ACTIONS')}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<php>$course_status=array("0"=>"隐藏","1"=>"显示");</php>
+				<foreach name="course" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.create_time}</td>
+					<td>{$vo.title}</td>
+					<td>
+						<foreach name="cate" item="vc">
+							<if condition="$vc['id'] eq $vo['cate_id']">
+								{$vc.name}
+								<else/>
+							</if>
+						</foreach>
+					</td>
+					<td><php>echo date('Y-m-d H:i:s',$vo['begin_time']);</php>--<php>echo date('Y-m-d H:i:s',$vo['end_time']);</php></td>
+					<td>{$vo.listorder}</td>
+					<td>{$course_status[$vo['status']]}</td>
+					<td>
+						<a class="label label-inverse" onclick="delete_course('{$vo.id}')">{:L('DELETE')}</a>
+						<a class="label label-inverse" href='{:U("Course/edit",array("id"=>$vo["id"]))}'>{:L('EDIT')}</a>
+						<if condition="$vo['status'] eq 1">
+							<a href="javascript:ban_course('{$vo.id}');" class="label label-inverse">隐藏</a>
+							<else />
+							<a href="javascript:cancel_ban('{$vo.id}')" class="label label-warning">显示</a>
+						</if>
+					</td>
+				</tr>
+				</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript">
+        //删除在线课程
+        function delete_course(id) {
+            $.dialog({
+                id: 'popup',
+                lock: true,
+                icon:"question",
+                content: "是否删除？",
+                cancel: true,
+                ok: function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{:U("Admin/Course/delete")}',
+                        data: {id:id},
+                        dataType: 'json',
+                        success: function (res) {
+                            if(res.status === 1){
+                                $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                                setTimeout(function(){
+                                    location.reload();
+                                },2000)
+                            }else{
+                                $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        //隐藏
+        function ban_course(id) {
+            $.dialog({
+                id: 'popup',
+                lock: true,
+                icon:"question",
+                content: "确定隐藏？",
+                cancel: true,
+                ok: function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{:U("Admin/Course/ban")}',
+                        data: {id:id},
+                        dataType: 'json',
+                        success: function (res) {
+                            if(res.status === 1){
+                                $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                                setTimeout(function(){
+                                    location.reload();
+                                },2000)
+                            }else{
+                                $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        //显示
+        function cancel_ban(id) {
+            $.dialog({
+                id: 'popup',
+                lock: true,
+                icon:"question",
+                content: "确定显示？",
+                cancel: true,
+                ok: function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{:U("Admin/Course/cancelban")}',
+                        data: {id:id},
+                        dataType: 'json',
+                        success: function (res) {
+                            if(res.status === 1){
+                                $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                                setTimeout(function(){
+                                    location.reload();
+                                },2000)
+                            }else{
+                                $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                            }
+                        }
+                    })
+                }
+            })
+        }
+	</script>
+</body>
+</html>

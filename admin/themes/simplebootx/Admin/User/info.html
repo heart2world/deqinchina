@@ -1,0 +1,23 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('user/index')}">{:L('ADMIN_USER_INDEX')}</a></li>
+			<li class="active"><a>管理员详情</a></li>
+		</ul>
+		<div style="padding: 12px;">
+			<div class="control-group">
+				<label class="control-label">{:L('XINGMING')}：<b>{$user_nicename}</b></label>
+			</div>
+			<div class="control-group">
+				<label class="control-label">{:L('ACCOUNT')}：<b>{$user_login}</b></label>
+			</div>
+			<div class="control-group">
+				<label class="control-label">{:L('BELONG_ROLE')}：<b>{$belong_role}</b></label>
+			</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

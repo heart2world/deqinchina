@@ -1,0 +1,65 @@
+<admintpl file="header"/>
+</head>
+<body>
+	<div class="wrap js-check-wrap" id="app">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('rbac/index')}">{:L('ADMIN_RBAC_INDEX')}</a></li>
+			<li class="active"><a href="{:U('rbac/roleadd')}">{:L('ADMIN_RBAC_ROLEADD')}</a></li>
+		</ul>
+		<form class="form-horizontal" id="roleAdd" method="post">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">{:L('ROLE_NAME')}</label>
+					<div class="controls">
+						<input type="text" name="name" value=""/>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">{:L('ROLE_DESCRIPTION')}</label>
+					<div class="controls">
+						<textarea name="remark" rows="2" cols="20" id="remark" class="inputtext" style="height: 100px; width: 500px;"></textarea>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="button" @click="add()" class="btn btn-success">{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/vue.js"></script>
+	<script src="__PUBLIC__/js/content_addtop.js"></script>
+	<script src="__PUBLIC__/js/define_my.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript">
+        var app = new Vue({
+            el:"#app",
+            data:{info:{}},
+            created:function(){},
+            methods:{
+                add:function () {
+                    var dataValues=$('#roleAdd').serialize();
+                    $.ajax({
+                        type:'POST',
+                        url:'{:U("Admin/Rbac/roleadd_post")}',
+                        data:dataValues,
+                        dataType:'json',
+                        success:function (res) {
+                            if(res.rs == 0){
+                                $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                                setTimeout(function(){
+                                    location.href='{:U("Admin/Rbac/index")}';
+                                },2000);
+                            } else {
+                                $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                            }
+                        }
+
+                    })
+                }
+            }
+        });
+	</script>
+</body>
+</html>

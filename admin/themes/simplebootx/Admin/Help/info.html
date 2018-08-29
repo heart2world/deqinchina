@@ -1,0 +1,31 @@
+<admintpl file="header" />
+<style type="text/css">
+	.controls{
+		margin-top: 5px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Help/feedback')}">用户反馈</a></li>
+			<li class="active"><a href="">反馈详情</a></li>
+		</ul>
+		<div class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label">反馈时间：</label>
+				<div class="controls">
+					{$create_time}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">反馈内容：</label>
+				<div class="controls">
+					{$content}
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+[ 2018-08-17T13:37:42+08:00 ] 127.0.0.1 /index.php?g=admin&m=public&a=login
+ERR: SQLSTATE[HY000] [1044] Access denied for user 'root'@'10.1.1.231' to database 'deqinchina'
+
+[ 2018-08-17T13:37:52+08:00 ] 127.0.0.1 /index.php?g=admin&m=public&a=login
+ERR: SQLSTATE[HY000] [1044] Access denied for user 'root'@'10.1.1.231' to database 'deqinchina'
+
+[ 2018-08-17T13:38:40+08:00 ] 127.0.0.1 /index.php?g=Admin&m=public&a=dologin
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: Run Behavior\CheckLangBehavior [ RunTime:0.002000s ]
+INFO: Run Common\Behavior\UrldecodeGetBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+INFO: [ admin_begin ] --START--
+INFO: Run Common\Behavior\AdminDefaultLangBehavior [ RunTime:0.003000s ]
+INFO: [ admin_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `dqc_users` [ RunTime:0.0120s ]
+SQL: SELECT * FROM `dqc_users` WHERE `user_login` = 'admin' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `dqc_role_user` [ RunTime:0.0100s ]
+SQL: SELECT `role_id` FROM dqc_role_user a INNER JOIN dqc_role as b on a.role_id =b.id  WHERE `user_id` = '1' AND `status` = 1  [ RunTime:0.0000s ]
+SQL: UPDATE `dqc_users` SET `user_login`='admin',`user_pass`='###3d06ced26bf5f510f44de2917f36db90',`user_nicename`='admin',`user_email`='136263676@qq.com',`user_url`='',`avatar`=NULL,`sex`='0',`birthday`='2000-01-01',`signature`=NULL,`last_login_ip`='127.0.0.1',`last_login_time`='2018-08-17 13:38:40',`create_time`='2018-08-13 10:12:43',`user_activation_key`='',`user_status`='1',`score`='0',`user_type`='1',`coin`='0',`mobile`='' WHERE `id` = '1' [ RunTime:0.0010s ]
+
+[ 2018-08-17T13:38:58+08:00 ] 127.0.0.1 /index.php?g=Admin&m=Bbs&a=cancel_popular
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: Run Behavior\CheckLangBehavior [ RunTime:0.002000s ]
+INFO: Run Common\Behavior\UrldecodeGetBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005000s ]
+INFO: [ admin_begin ] --START--
+INFO: Run Common\Behavior\AdminDefaultLangBehavior [ RunTime:0.005000s ]
+INFO: [ admin_begin ] --END-- [ RunTime:0.005000s ]
+SQL: SHOW COLUMNS FROM `dqc_users` [ RunTime:0.0080s ]
+SQL: SELECT * FROM `dqc_users` WHERE `id` = '1' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `dqc_users` [ RunTime:0.0090s ]
+SQL: SHOW COLUMNS FROM `dqc_bbs_cat` [ RunTime:0.0100s ]
+SQL: SHOW COLUMNS FROM `dqc_banner` [ RunTime:0.0070s ]
+SQL: SHOW COLUMNS FROM `dqc_bbs` [ RunTime:0.0100s ]
+SQL: SHOW COLUMNS FROM `dqc_bbs_banned` [ RunTime:0.0090s ]
+SQL: SHOW COLUMNS FROM `dqc_bbs_comment` [ RunTime:0.0080s ]
+SQL: SHOW COLUMNS FROM `dqc_bbs_reply` [ RunTime:0.0100s ]
+SQL: UPDATE `dqc_bbs` SET `status`='0' WHERE `id` = 3 [ RunTime:0.0350s ]
+NOTIC: [8] Undefined index: url D:\phpStudy\WWW\deqingchina\application\Common\Controller\AppframeController.class.php 第 22 行.
+

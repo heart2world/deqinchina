@@ -1,0 +1,47 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Course/category')}">课程类型</a></li>
+			<li class="active"><a href="{:U('Course/cateadd')}">课程类型添加</a></li>
+		</ul>
+		<form method="post" id="formInfo" class="form-horizontal">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">类型</label>
+					<div class="controls">
+						<input type="text" name="name" maxlength="50" placeholder="请输入课程类型名称">
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="button" id="butSubmit" class="btn btn-info">{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+    $("#butSubmit").on('click',function () {
+        var dataValues = $('#formInfo').serialize();
+        $.ajax({
+            type:'POST',
+            url:'{:U("Course/cateadd_post")}',
+            data:dataValues,
+            dataType:'json',
+            success:function (res) {
+                if(res.status === 1){
+                    $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                    setTimeout(function(){
+                        location.href='{:U("Admin/Course/category")}';
+                    },2000);
+                }else{
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>

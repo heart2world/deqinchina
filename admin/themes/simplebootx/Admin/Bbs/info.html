@@ -1,0 +1,219 @@
+<admintpl file="header" />
+<style type="text/css">
+	.top li{
+		list-style: none;
+		float: left;
+		width:33%;
+	}
+	.bottom li{
+		list-style: none;
+		float: left;
+	}
+	ul{
+		width:100%;
+		display:inline-block;
+		margin: 0;
+	}
+	.kr-mar{
+		margin-top: 12px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Bbs/index')}">BBS管理</a></li>
+			<li class="active"><a href="">帖子详情</a></li>
+		</ul>
+		<div>
+			<ul class="top">
+				<li>
+					<div>
+						<img style="width:30%;border-radius: 50px;" src="{:sp_get_image_preview_url('admin/20180815/5b73e89c85980.jpg')}">
+						<!--<img style="width:30%;border-radius: 50px;" src="{:sp_get_image_preview_url($user['avatar'])}">-->
+						<div style="width:60%;float: right;">
+							<label><b>{$user['user_nicename']}</b></label>
+							<label>{$info['create_time']}</label>
+						</div>
+					</div>
+				</li>
+				<li>
+					<b style="font-size: 18px;">{$info.title}</b>
+					<p style="margin-top: 6px;">
+						<php>$images = explode(',',$info['images'])</php>
+						<foreach name="images" item="vo">
+						<img style="max-width: 48%;margin-right: 5px;" src="{:sp_get_image_preview_url($vo)}">
+						</foreach>
+					</p>
+				</li>
+				<li style="text-align: center;">
+					<if condition="$user['banned'] eq 1">
+						<a class="label label-inverse" onclick="banned('{$user.id}')">禁言</a>
+						<else />
+						<a class="label label-warning" onclick="cancel_banned('{$user.id}')">取消禁言</a>
+					</if>
+				</li>
+			</ul>
+			<div style="position: relative;">
+				<p><span style="color: #92C33c;">| </span>大家热议</p>
+			</div>
+			<foreach name="comment" item="vc">
+			<ul class="bottom" style="margin-bottom: 20px;">
+				<li style="width:33%;">
+					<div>
+						<img style="width:30%;border-radius: 50px;" src="{:sp_get_image_preview_url('admin/20180815/5b73e89c85980.jpg')}">
+						<!--<img style="width:30%;border-radius: 50px;" src="{:sp_get_image_preview_url($vc['avatar'])}">-->
+						<div style="width:60%;float: right;">
+							<label><b>{$vc['username']}</b></label>
+							<label>{$vc['create_time']}</label>
+						</div>
+					</div>
+				</li>
+				<li style="width:66%;">
+					<ul>
+						<li style="width:50%;font-size: 16px;">{$vc.comment}</li>
+						<li style="width:49%;text-align: center;">
+							<a class="label label-inverse" href="javascript:delete_comment('{$vc.id}');">删除</a>
+							<if condition="$vc['banned'] eq 1">
+								<a class="label label-inverse " onclick="banned('{$vc.user_id}')">禁言</a>
+								<else/>
+								<a class="label label-warning" onclick="cancel_banned('{$vc.user_id}')">取消禁言</a>
+							</if>
+						</li>
+						<foreach name="vc['reply']" item="vr" key="kr">
+							<ul class="<if condition='$kr eq 0'>kr-mar</if>">
+								<li style="width:50%;font-size: 14px;">
+									<span style="color: #92C33c;">{$vr.username}：</span>{$vr.reply}
+								</li>
+								<li style="width:49%;text-align: center;">
+									<a onclick="delete_reply('{$vr.id}')" style="color: #00a0e9;">删除</a>
+								</li>
+							</ul>
+						</foreach>
+					</ul>
+				</li>
+			</ul>
+			</foreach>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+    //禁言
+    function banned(id) {
+        $.dialog({
+            id: 'popup',
+            lock: true,
+            icon:"question",
+            content: "禁言后该员工3天内不能在发帖、回帖，是否禁言？",
+            cancel: true,
+            ok: function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("Admin/Bbs/banned")}',
+                    data: {id:id},
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.rs == 0){
+                            $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                            setTimeout(function(){
+                                location.reload();
+                            },2000)
+                        }else{
+                            $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    //取消禁言
+    function cancel_banned(id) {
+        $.dialog({
+            id: 'popup',
+            lock: true,
+            icon:"question",
+            content: "是否取消禁言？",
+            cancel: true,
+            ok: function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("Admin/Bbs/cancel_banned")}',
+                    data: {id:id},
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.rs == 0){
+                            $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                            setTimeout(function(){
+                                location.reload();
+                            },2000)
+                        }else{
+                            $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    //删除评论
+    function delete_comment(id) {
+        $.dialog({
+            id: 'popup',
+            lock: true,
+            icon:"question",
+            content: "会一并删除该条评论的回复，是否删除？",
+            cancel: true,
+            ok: function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("Admin/Bbs/comment_delete")}',
+                    data: {id:id},
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.rs == 0){
+                            $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                            setTimeout(function(){
+                                location.reload();
+                            },2000)
+                        }else{
+                            $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    //删除回复
+    function delete_reply(id) {
+        $.dialog({
+            id: 'popup',
+            lock: true,
+            icon:"question",
+            content: "是否删除？",
+            cancel: true,
+            ok: function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("Admin/Bbs/reply_delete")}',
+                    data: {id:id},
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.rs == 0){
+                            $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                            setTimeout(function(){
+                                location.reload();
+                            },2000)
+                        }else{
+                            $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                        }
+                    }
+                })
+            }
+        })
+    }
+</script>
+</body>
+</html>

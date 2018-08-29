@@ -1,0 +1,46 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('SystemConfig/integration_rule')}">积分规则</a></li>
+			<li><a href="{:U('SystemConfig/sensitive_word')}">敏感词汇</a></li>
+			<li class="active"><a href="{:U('SystemConfig/protocol')}">使用协议</a></li>
+			<li><a href="{:U('SystemConfig/app')}">APP名称</a></li>
+			<li><a href="{:U('SystemConfig/game')}">游戏PK设置</a></li>
+		</ul>
+		<div style="margin-top: 30px;">
+			<div>
+				<textarea id="text" style="width: 750px;height: 400px" placeholder='请输入使用协议'>{$data['data']}</textarea>
+			</div>
+			<div style="float: left;margin-left: 700px;margin-top: 20px">
+				<a class="btn btn-success" onclick="save()"> 保存</a>
+			</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript">
+		function save() {
+		    var protocol = $('#text').val();
+            $.ajax({
+                type:'POST',
+                url:'{:U("set_protocol")}',
+                data:{protocol:protocol},
+                dataType:'json',
+                success:function (res) {
+                    if(res.code == 0){
+                        $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                        setTimeout(function(){
+                            location.href='{:U("protocol")}';
+                        },1000);
+                    } else {
+                        $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                    }
+                }
+
+            })
+        }
+	</script>
+</body>
+</html>

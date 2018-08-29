@@ -1,0 +1,42 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('IntegralMall/mg_gift')}">礼品管理</a></li>
+			<li><a href="{:U('IntegralMall/exchange_gift')}">兑换订单</a></li>
+			<li class="active"><a href="{:U('IntegralMall/address')}">收货地址</a></li>
+		</ul>
+		<div style="margin-top:30px;margin-bottom: 10px;margin-left: 30px;">
+			<span>收货地址</span>
+			<input style="margin-left: 20px;width: 350px;" type="text" id="address" placeholder="请输入收货地址" value="">
+			<div>
+				<a style="margin-left: 380px;margin-top: 20px" onclick="save()" class="btn btn-success">保存</a>
+			</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript">
+       function save() {
+		   var address = $('#address').val();
+           $.ajax({
+               type: 'POST',
+               url: '{:U("add_address_post")}',
+               data: {address:address},
+               dataType: 'json',
+               success: function (res) {
+                   if(res.code == 0){
+                       $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                       setInterval(function(){
+                           location.href = '{:U("address")}'
+                       },2000)
+                   }else{
+                       $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                   }
+               }
+           })
+       }
+	</script>
+</body>
+</html>

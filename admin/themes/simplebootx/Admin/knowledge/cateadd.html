@@ -1,0 +1,63 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Knowledge/category')}">知识类型</a></li>
+			<li class="active"><a href="{:U('Knowledge/cateadd')}">知识类型添加</a></li>
+		</ul>
+		<form method="post" id="formInfo" class="form-horizontal">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">知识类型</label>
+					<div class="controls">
+						<input type="text" name="name" maxlength="50" placeholder="请输入知识类型名称">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">类型排序</label>
+					<div class="controls">
+						<input type="number" name="listorder" placeholder="请输入序号">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">形象图</label>
+					<div class="controls">
+						<input type="hidden" name="imgurl" id="thumb" value="">
+						<a href="javascript:upload_one_image('图片上传','#thumb');">
+							<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand" />
+						</a>
+						<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="button" id="butSubmit" class="btn btn-info">{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+    $("#butSubmit").on('click',function () {
+        var dataValues = $('#formInfo').serialize();
+        $.ajax({
+            type:'POST',
+            url:'{:U("Knowledge/cateadd_post")}',
+            data:dataValues,
+            dataType:'json',
+            success:function (res) {
+                if(res.status === 1){
+                    $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                    setTimeout(function(){
+                        location.href='{:U("Admin/Knowledge/category")}';
+                    },2000);
+                }else{
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>

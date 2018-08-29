@@ -1,0 +1,71 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Knowledge/index')}">知识文库</a></li>
+			<li class="active"><a href="{:U('Knowledge/category')}">知识类型</a></li>
+			<li><a href="{:U('Knowledge/banner')}">页面轮播图</a></li>
+		</ul>
+		<a class="btn btn-info" href="{:U('Knowledge/cateadd')}" style="margin-bottom: 16px;">新增类型</a>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th width="50">ID</th>
+					<th>类型</th>
+					<th>形象图</th>
+					<th>排序</th>
+					<th width="240">{:L('ACTIONS')}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<foreach name="cate" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.name}</td>
+					<td><img src="{:sp_get_image_preview_url($vo['imgurl'])}" width="60" style="cursor: hand"/></td>
+					<td>{$vo.listorder}</td>
+					<td>
+						<a class="label label-inverse" onclick="delete_cate('{$vo.id}')">{:L('DELETE')}</a>
+						<a class="label label-inverse" href='{:U("Knowledge/catedit",array("id"=>$vo["id"]))}'>{:L('EDIT')}</a>
+					</td>
+				</tr>
+				</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript">
+        //删除类型
+        function delete_cate(id) {
+            $.dialog({
+                id: 'popup',
+                lock: true,
+                icon:"question",
+                content: "是否删除？",
+                cancel: true,
+                ok: function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{:U("Admin/Knowledge/cate_delete")}',
+                        data: {id:id},
+                        dataType: 'json',
+                        success: function (res) {
+                            if(res.status === 1){
+                                $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                                setTimeout(function(){
+                                    location.reload();
+                                },2000)
+                            }else{
+                                $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                            }
+                        }
+                    })
+                }
+            })
+        }
+	</script>
+</body>
+</html>

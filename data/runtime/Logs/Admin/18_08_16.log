@@ -1,0 +1,21 @@
+[ 2018-08-16T16:46:47+08:00 ] 127.0.0.1 /index.php?g=Admin&m=public&a=dologin
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: Run Behavior\CheckLangBehavior [ RunTime:0.002000s ]
+INFO: Run Common\Behavior\UrldecodeGetBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.006000s ]
+INFO: [ admin_begin ] --START--
+INFO: Run Common\Behavior\AdminDefaultLangBehavior [ RunTime:0.003000s ]
+INFO: [ admin_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `dqc_users` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `dqc_users` WHERE `user_login` = 'admin' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `dqc_role_user` [ RunTime:0.0060s ]
+SQL: SELECT `role_id` FROM dqc_role_user a INNER JOIN dqc_role as b on a.role_id =b.id  WHERE `user_id` = '1' AND `status` = 1  [ RunTime:0.0010s ]
+SQL: UPDATE `dqc_users` SET `user_login`='admin',`user_pass`='###3d06ced26bf5f510f44de2917f36db90',`user_nicename`='admin',`user_email`='136263676@qq.com',`user_url`='',`avatar`=NULL,`sex`='0',`birthday`='2000-01-01',`signature`=NULL,`last_login_ip`='127.0.0.1',`last_login_time`='2018-08-16 16:46:47',`create_time`='2018-08-13 10:12:43',`user_activation_key`='',`user_status`='1',`score`='0',`user_type`='1',`coin`='0',`mobile`='' WHERE `id` = '1' [ RunTime:0.0010s ]
+
+[ 2018-08-16T17:26:06+08:00 ] 127.0.0.1 /index.php?g=Admin&m=Rbac&a=authorize&id=3
+NOTIC: D方法实例化没找到模型类Common\Model\AuthAccessModel
+
+[ 2018-08-16T17:26:42+08:00 ] 127.0.0.1 /index.php?g=Admin&m=Rbac&a=authorize&id=3
+NOTIC: D方法实例化没找到模型类Common\Model\AuthAccessModel
+

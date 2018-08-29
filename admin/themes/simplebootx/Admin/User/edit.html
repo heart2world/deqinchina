@@ -1,0 +1,80 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap" id="app">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('user/index')}">{:L('ADMIN_USER_INDEX')}</a></li>
+			<li><a href="{:U('user/add')}">{:L('ADMIN_USER_ADD')}</a></li>
+			<li class="active"><a>编辑管理员</a></li>
+		</ul>
+		<form method="post" id="userEdit" class="form-horizontal">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">{:L('XINGMING')}</label>
+					<div class="controls">
+						<input type="text" name="user_nicename" value="{$user_nicename}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">{:L('ACCOUNT')}</label>
+					<div class="controls">
+						<input type="text" name="user_login" value="{$user_login}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">{:L('ROLE')}</label>
+					<div class="controls">
+						<select name="role_id">
+							<foreach name="roles" item="vo">
+								<php>$role_id_checked=in_array($vo['id'],$role_ids)?"selected":"";</php>
+								<if condition="sp_get_current_admin_id() neq 1 && $vo['id'] eq 1">
+									<else/>
+									<option value="{$vo.id}" {$role_id_checked}>{$vo.name}</option>
+								</if>
+							</foreach>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$id}" />
+				<button type="button" class="btn btn-success" @click="update()">{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/vue.js"></script>
+	<script src="__PUBLIC__/js/content_addtop.js"></script>
+	<script src="__PUBLIC__/js/define_my.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript">
+        var app = new Vue({
+            el:"#app",
+            data:{info:{}},
+            created:function(){},
+            methods:{
+                update:function () {
+                    var dataValues=$('#userEdit').serialize();
+                    $.ajax({
+                        type:'POST',
+                        url:'{:U("Admin/User/edit_post")}',
+                        data:dataValues,
+                        dataType:'json',
+                        success:function (res) {
+                            if(res.rs == 0){
+                                $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                                setTimeout(function(){
+                                    location.href='{:U("Admin/User/index")}';
+                                },2000);
+                            } else {
+                                $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                            }
+                        }
+
+                    })
+                }
+            }
+        });
+	</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<admintpl file="header" />
+<style type="text/css">
+	.edui-default{
+		width:80%;
+	}
+	.groups_info label{
+		display: inline;
+		margin-right: 12px;
+		height:25px;
+		line-height: 25px;
+	}
+	.groups_info label input{
+		margin: 0;
+	}
+	.exam_table{
+		width:60%;
+	}
+	.exam_table tr th,.exam_table tr td{
+		border: 1px solid lightgray;
+	}
+	.exam_table td{
+		text-align: center;
+	}
+	.exam_table tr{
+		height: 40px;
+	}
+	.exam_table td select{
+		width:120px;
+	}
+	.label-text{
+		height: 28px;
+		line-height: 28px;
+	}
+	.div-text{
+		height: 28px;
+		line-height: 28px;
+		width:20%;
+		display: inline;
+		margin-right: 10px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap" id="app">
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('Exam/index')}">在线测评</a></li>
+		<li class="active"><a>测评试题添加</a></li>
+	</ul>
+	<form id="formInfo" method="post" class="form-horizontal" enctype="multipart/form-data">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">标题</label>
+				<div class="controls">
+					<label class="label-text">{$title}</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">类型</label>
+				<div class="controls">
+					<label class="label-text">{$cate.name}</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">测评时间</label>
+				<div class="controls">
+					<label class="label-text">{$exam_time}分钟</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">测评总分</label>
+				<div class="controls">
+					<label class="label-text">{$score}分</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">当前题数</label>
+				<div class="controls">
+					<div class="div-text">
+						<span>单选题（</span><span class="single_count"><php>echo count($singles);</php></span><span>/</span><span>{$single}</span><span>）</span>
+					</div>
+					<div class="div-text">
+						<span>多选题（</span><span class="multiple_count"><php>echo count($multiples);</php></span><span>/</span><span>{$multiple}</span><span>）</span>
+					</div>
+					<div class="div-text">
+						<span>判断题（</span><span class="judgment_count"><php>echo count($judgments);</php></span><span>/</span><span>{$judgment}</span><span>）</span>
+					</div>
+					<div class="div-text">
+						<span>主观题（</span><span class="subject_count"><php>echo count($subjects);</php></span><span>/</span><span>{$subject}</span><span>）</span>
+					</div>
+				</div>
+			</div>
+			<div class="control-group" style="border-top: 1px solid #dce4ec;"></div>
+			<div class="control-group" style="margin-bottom: 30px;">
+				<label class="control-label">单选题（</span><span class="single_count"><php>echo count($singles);</php></span><span>/</span><span>{$single}</span><span>）</span></label>
+				<div class="controls">
+					<label class="label-text"><a href='{:U("Exam/quesadd",array("id"=>$id,"type"=>1))}'>添加新试题</a><a href='{:U("Exam/library",array("id"=>$id,"type"=>1))}' style="margin-left: 120px;">从试题库中选择</a></label>
+					<table class="exam_table">
+						<thead>
+							<tr>
+								<th width="60">
+									<span class="label list-order" style="cursor: pointer;">排序</span>
+								</th>
+								<th>标题</th>
+								<th width="120">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						<foreach name="singles" item="vs">
+							<tr>
+								<td><input type="number" size="3" name="list_order" data-id="{$vs.id}" class="input input-order mr5" value="{$vs.listorder}"></td>
+								<td>{$vs.topic}</td>
+								<td><a class="label label-inverse delete-relation" data-id="{$vs.id}">{:L('DELETE')}</a></td>
+							</tr>
+						</foreach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="control-group" style="margin-bottom: 30px;">
+				<label class="control-label">多选题（</span><span class="multiple_count"><php>echo count($multiples);</php></span><span>/</span><span>{$multiple}</span><span>）</span></label>
+				<div class="controls">
+					<label class="label-text"><a href='{:U("Exam/quesadd",array("id"=>$id,"type"=>2))}'>添加新试题</a><a href='{:U("Exam/library",array("id"=>$id,"type"=>2))}' style="margin-left: 120px;">从试题库中选择</a></label>
+					<table class="exam_table">
+						<thead>
+						<tr>
+							<th width="60">
+								<span class="label list-order" style="cursor: pointer;">排序</span>
+							</th>
+							<th>标题</th>
+							<th width="120">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<foreach name="multiples" item="vm">
+						<tr>
+							<td><input type="number" size="3" name="list_order" data-id="{$vm.id}" class="input input-order mr5" value="{$vm.listorder}"></td>
+							<td>{$vm.topic}</td>
+							<td><a class="label label-inverse delete-relation" data-id="{$vm.id}">{:L('DELETE')}</a></td>
+						</tr>
+						</foreach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="control-group" style="margin-bottom: 30px;">
+				<label class="control-label">判断题（</span><span class="judgment_count"><php>echo count($judgments);</php></span><span>/</span><span>{$judgment}</span><span>）</span></label>
+				<div class="controls">
+					<label class="label-text"><a href='{:U("Exam/quesadd",array("id"=>$id,"type"=>3))}'>添加新试题</a><a href='{:U("Exam/library",array("id"=>$id,"type"=>3))}' style="margin-left: 120px;">从试题库中选择</a></label>
+					<table class="exam_table">
+						<thead>
+						<tr>
+							<th width="60">
+								<span class="label list-order" style="cursor: pointer;">排序</span>
+							</th>
+							<th>标题</th>
+							<th width="120">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<foreach name="judgments" item="vj">
+						<tr>
+							<td><input type="number" size="3" name="list_order" data-id="{$vj.id}" class="input input-order mr5" value="{$vj.listorder}"></td>
+							<td>{$vj.topic}</td>
+							<td><a class="label label-inverse delete-relation" data-id="{$vj.id}">{:L('DELETE')}</a></td>
+						</tr>
+						</foreach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">主观题（</span><span class="subject_count"><php>echo count($subjects);</php></span><span>/</span><span>{$subject}</span><span>）</span></label>
+				<div class="controls">
+					<label class="label-text"><a href='{:U("Exam/quesadd",array("id"=>$id,"type"=>4))}'>添加新试题</a><a href='{:U("Exam/library",array("id"=>$id,"type"=>4))}' style="margin-left: 120px;">从试题库中选择</a></label>
+					<table class="exam_table">
+						<thead>
+						<tr>
+							<th width="60">
+								<span class="label list-order" style="cursor: pointer;">排序</span>
+							</th>
+							<th>标题</th>
+							<th width="120">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<foreach name="subjects" item="vb">
+							<tr>
+								<td><input type="number" size="3" name="list_order" data-id="{$vb.id}" class="input input-order mr5" value="{$vb.listorder}"></td>
+								<td>{$vb.topic}</td>
+								<td><a class="label label-inverse delete-relation" data-id="{$vb.id}">{:L('DELETE')}</a></td>
+							</tr>
+						</foreach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions" style="text-align: center;">
+			<input type="hidden" id="paperId" name="paperId" value="{$id}">
+			<button class="btn btn-info" id="butSubmit" type="button">提交{:L('SAVE')}</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+	//计算分数
+	$(".exam_type").on('change',function () {
+	    var score = totalScore();
+	    if(score > 0){
+	        $("#score").val(score);
+		}
+    });
+	function totalScore() {
+	    var score;
+		var single = parseInt($("select[name=single]").val());
+		var single_score = parseFloat($("select[name=single_score]").val());
+        var multiple = parseInt($("select[name=multiple]").val());
+        var multiple_score = parseFloat($("select[name=multiple_score]").val());
+        var judgment = parseInt($("select[name=judgment]").val());
+        var judgment_score = parseFloat($("select[name=judgment_score]").val());
+        var subject = parseInt($("select[name=subject]").val());
+        var subject_score = parseFloat($("select[name=subject_score]").val());
+        score = single*single_score+multiple*multiple_score+judgment*judgment_score+subject*subject_score;
+        return score;
+    }
+
+    //删除添加的试题
+	$(".delete-relation").on('click',function () {
+	    var relationId = $(this).attr('data-id');
+	    var paperId = $("#paperId").val();
+        $.dialog({
+            id: 'popup',
+            lock: true,
+            icon:"question",
+            content: "是否删除？",
+            cancel: true,
+            ok: function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("Admin/Exam/library_delete")}',
+                    data: {id:relationId,paper_id:paperId},
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.status === 1){
+                            $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                            setTimeout(function(){
+                                location.reload();
+                            },2000)
+                        }else{
+                            $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                        }
+                    }
+                })
+            }
+        })
+    });
+
+    //提交数据
+    $("#butSubmit").on('click',function () {
+        var paperId = $("#paperId").val();
+        $.ajax({
+            type:'POST',
+            url:'{:U("Exam/paper_post")}',
+            data:{id:paperId},
+            dataType:'json',
+            success:function (res) {
+                if(res.status === 1){
+                    $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                    setTimeout(function(){
+                        location.href='{:U("Admin/Exam/index")}';
+                    },2000);
+                }else{
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                }
+            }
+        })
+    });
+
+    //排序
+	$(".list-order").on('click',function () {
+	    var closeTable = $(this).closest('table.exam_table');
+	    var paperId = $("#paperId").val();
+	    var lists = [];
+        closeTable.find("input[name=list_order]").each(function (i) {
+            lists[i] = {};
+            lists[i]['id'] = $(this).attr('data-id');
+            lists[i]['value'] = $(this).val();
+        });
+        if(lists.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '{:U("Exam/list_order")}',
+                data: {id: paperId, lists: lists},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status === 1) {
+                        location.reload();
+                    } else {
+                        $.dialog({id: 'popup', lock: true, icon: "warning", content: res.info, time: 2});
+                    }
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>

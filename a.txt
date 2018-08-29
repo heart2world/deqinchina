@@ -1,0 +1,1 @@
+'{&quot;type&quot;:&quot;ping&quot;}'

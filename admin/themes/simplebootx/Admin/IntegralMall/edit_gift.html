@@ -1,0 +1,164 @@
+<admintpl file="header" />
+</head>
+<link href="__PUBLIC__/js/jedate/skin/jedate.css" rel="stylesheet">
+<style>
+	span{
+		margin-right: 20px;
+	}
+	input{
+		width: 450px;
+	}
+
+	.laydate-icon {
+		background: url('/public/js/jedate/skin/jedate.png') no-repeat right;
+	}
+
+	.time {
+		width: 249px;
+		height: 15px;
+		line-height: 15px;
+		padding: 6px 0 6px 10px;
+		border: 1px solid #C1C1C1;
+	}
+</style>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('IntegralMall/mg_gift')}">礼品管理</a></li>
+			<li><a href="{:U('IntegralMall/exchange_order')}">兑换订单</a></li>
+			<li><a href="{:U('IntegralMall/address')}">收货地址</a></li>
+		</ul>
+		<div style="margin-left: 30px;margin-top: 30px">
+			<div>
+				<span>礼品名称</span>
+				<input type="text" id="gift_name" value="{$data.gift_name}" placeholder="请输入礼品名称">
+			</div>
+			<div style="margin-top: 20px">
+				<span style="margin-right: 35px">缩略图</span>
+				<input type="hidden" name="imgurl" id="thumbnail" value="{$data.thumbnail}">
+				<input type="hidden" name="imgurl" id="thumbnail-name" value="{$data.thumb_name}">
+				<img src="{$url}{$data.thumbnail}" id="thumbnail-preview" width="135" style="cursor: hand" />
+				<a style="margin-left: 15px" href="javascript:upload_one_image('图片上传','#thumbnail');" class="btn btn-success">点击上传</a>(图片尺寸 300*300)
+			</div>
+			<div style="margin-top: 20px">
+				<span style="margin-right: 35px">商品图</span>
+				<input type="hidden" name="imgurl" id="img" value="{$data.img}">
+				<input type="hidden" name="imgurl" id="img-name" value="{$data.img_name}">
+				<img src="{$url}{$data.img}" id="img-preview" width="135" style="cursor: hand" />
+				<a style="margin-left: 15px" href="javascript:upload_one_image('图片上传','#img');" class="btn btn-success">点击上传</a>(图片尺寸 750*350)
+			</div>
+			<div style="margin-top: 20px">
+				<span>排序</span>
+				<input style="margin-left: 30px;" type="text" id="sort" value="{$data.sort}" placeholder="请输入排序">
+			</div>
+			<div style="margin-top: 20px">
+				<span>兑换时间</span>
+				<input class="time laydate-icon" type="text" name="start_time" autocomplete="off" id="start_time" style="cursor: pointer;width: 165px;margin-right: 20px" placeholder="请选择日期" value="{$data.start_time}">
+				<input class="time laydate-icon" type="text" name="end_time" autocomplete="off" id="end_time" style="cursor: pointer;width: 165px;" placeholder="请选择日期" value="{$data.end_time}">&nbsp;
+			</div>
+			<div style="margin-top: 20px">
+				<span>剩余数量</span>
+				<input type="text" id="inventory" value="{$data.inventory}" placeholder="请输入可兑换总数">
+			</div>
+			<div style="margin-top: 20px">
+				<span>所需积分</span>
+				<input type="text" id="integral" value="{$data.integral}" placeholder="请输入礼品所需积分">
+			</div>
+			<div style="margin-top: 20px">
+				<div style="float: left;margin-right: 25px">商品详情</div>
+				<div class="controls" style="width: 800px;float: left">
+					<script type="text/plain" id="content">{$data.detail}</script>
+				</div>
+			</div>
+			<input type="hidden" id="id" value="{$data.id}">
+			<div style="clear: both"></div>
+			<div style="margin-top: 50px;margin-left: 820px;">
+				<a class="btn btn-success" onclick="save()">保存</a>
+			</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/layer/layer.js"></script>
+	<script src="__PUBLIC__/js/jedate/jedate.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+        $(function () {
+            jeDate("#start_time",{
+                theme:{bgcolor:"#00A680",pnColor:"#00DDAA"},
+                format: "YYYY-MM-DD hh:mm:ss",
+            });
+            jeDate("#end_time",{
+                theme:{bgcolor:"#00A680",pnColor:"#00DDAA"},
+                format: "YYYY-MM-DD hh:mm:ss",
+            });
+        });
+
+        $(function() {
+            Wind.use('validate','artDialog', function() {
+                //编辑器
+                editorcontent = new baidu.editor.ui.Editor();
+                editorcontent.render('content');
+                try {
+                    editorcontent.sync();
+                } catch (err) {
+                }
+                //增加编辑器验证规则
+                jQuery.validator.addMethod('editorcontent', function() {
+                    try {
+                        editorcontent.sync();
+                    } catch (err) {
+                    }
+                    return editorcontent.hasContents();
+                });
+            });
+        });
+
+        //提交数据
+        function save() {
+            var id = $('#id').val();
+			var gift_name = $('#gift_name').val();
+			var thumbnail = $('#thumbnail').val();
+			var thumb_name = $('#thumbnail-name').val();
+			var img = $('#img').val();
+			var img_name = $('#img-name').val();
+            var sort = $('#sort').val();
+            var start_time = $('#start_time').val();
+            var end_time = $('#end_time').val();
+            var inventory = $('#inventory').val();
+            var integral = $('#integral').val();
+            var detail = UE.getEditor('content').getContent();
+
+            $.ajax({
+                type: 'POST',
+                url: '{:U("IntegralMall/edit_post")}',
+                data: {
+                    id:id,
+                    gift_name:gift_name,
+					thumbnail:thumbnail,
+					thumb_name:thumb_name,
+					img:img,img_name:img_name,
+					sort:sort,
+					start_time:start_time,
+					end_time:end_time,
+					inventory:inventory,
+					integral:integral,
+					detail:detail
+				},
+                dataType: 'json',
+                success: function (res) {
+                    if(res.code == 0){
+                        $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.msg, time: 2});
+                        setInterval(function(){
+                            location.reload();
+                        },2000)
+                    }else{
+                        $.dialog({id: 'popup', lock: true,icon:"warning", content: res.msg, time: 2});
+                    }
+                }
+            })
+        }
+	</script>
+</body>
+</html>

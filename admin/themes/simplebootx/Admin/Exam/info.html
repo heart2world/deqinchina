@@ -1,0 +1,193 @@
+<admintpl file="header" />
+<style type="text/css">
+	.text-info label{
+		height:30px;
+		line-height: 30px;
+		cursor: default;
+	}
+	.text-info label span{
+		margin-right: 20px;
+	}
+	.option span{
+		color: #2c3e50;
+	}
+	.option span input{
+		transform: scale(1.5,1.5);
+		margin: -2px 10px 0 0;
+	}
+	.question label b{
+		margin-left: 100px;
+	}
+	.question{
+		margin-bottom: 12px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Exam/index')}">在线测评</a></li>
+			<li><a href='{:U("Exam/examinfo",array("id"=>$exam["paper_id"]))}'>查看测评</a></li>
+			<li class="active"><a href="">测评详情</a></li>
+		</ul>
+		<form method="post" id="formInfo" class="form-horizontal">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">测评信息</label>
+					<div class="controls text-info">
+						<label style="color: black;">测评名称：<b>{$paper['title']}</b>
+							&nbsp;&nbsp;&nbsp;&nbsp;测评用户：<b>{$user['name']}</b>
+							&nbsp;&nbsp;&nbsp;&nbsp;得分：<b><if condition="$exam['status'] eq 1">待阅卷<else/>{$exam.score}分</if></b>
+						</label>
+					</div>
+				</div>
+				<if condition="$paper['single'] gt 0">
+				<div class="control-group">
+					<label class="control-label">单选题（<php>echo $paper['single']*$paper['single_score'];</php>分）</label>
+					<div class="controls text-info">
+						<foreach name="singles" item="vs" key="kvs">
+							<div class="question">
+								<label>
+									<span>{$kvs+1}.</span>{$vs.topic}（{$paper['single_score']}分）
+									<if condition="$vs['correct'] eq 0">
+										<b style="color: red;">错误</b>
+										<else/>
+										<b style="color: #1dccaa;">正确</b>
+									</if>
+								</label>
+								<label class="option">
+									<foreach name="vs['option']" item="vso">
+										<span><input name="option{$kvs}" type="radio" {$vso.check} disabled>{$vso.number}：{$vso.answer}</span>
+									</foreach>
+								</label>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				</if>
+				<if condition="$paper['multiple'] gt 0">
+				<div class="control-group">
+					<label class="control-label">多选题（<php>echo $paper['multiple']*$paper['multiple_score'];</php>分）</label>
+					<div class="controls text-info">
+						<foreach name="multiples" item="vm" key="kvm">
+							<div class="question">
+								<label>
+									<span>{$kvm+1}.</span>{$vm.topic}（{$paper['multiple_score']}分）
+									<if condition="$vm['correct'] eq 0">
+										<b style="color: red;">错误</b>
+										<else/>
+										<b style="color: #1dccaa;">正确</b>
+									</if>
+								</label>
+								<label class="option">
+									<foreach name="vm['option']" item="vmo">
+										<span><input name="check{$kvm}" type="checkbox" {$vmo.check} disabled>{$vmo.number}：{$vmo.answer}</span>
+									</foreach>
+								</label>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				</if>
+				<if condition="$paper['judgment'] gt 0">
+				<div class="control-group">
+					<label class="control-label">判断题（<php>echo $paper['judgment']*$paper['judgment_score'];</php>分）</label>
+					<div class="controls text-info">
+						<foreach name="judgments" item="vj" key="kvj">
+							<div class="question">
+								<label>
+									<span>{$kvj+1}.</span>{$vj.topic}（{$paper['judgment_score']}分）
+									<if condition="$vj['correct'] eq 0">
+										<b style="color: red;">错误</b>
+										<else/>
+										<b style="color: #1dccaa;">正确</b>
+									</if>
+								</label>
+								<label class="option">
+									<span><input name="judgment{$kvj}" type="radio" value="1" disabled <if condition="$vj['check'] eq 1">checked</if>>正确</span>
+									<span><input name="judgment{$kvj}" type="radio" value="0" disabled <if condition="$vj['check'] eq 0">checked</if>>错误</span>
+								</label>
+								<label style="color: #dce4ea;">讲解：{$vj.answer}</label>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				</if>
+				<if condition="$paper['subject'] gt 0">
+				<div class="control-group">
+					<label class="control-label">主观题（<php>echo $paper['subject']*$paper['subject_score'];</php>分）</label>
+					<input type="hidden" id="subScore" value="{$paper['subject_score']}">
+					<div class="controls text-info subject-question">
+						<foreach name="subjects" item="vb" key="kvb">
+							<div class="question">
+								<label><span>{$kvb+1}.</span>{$vb.topic}（{$paper['subject_score']}分）</label>
+								<label style="color: #2c3e50;">答：{$vb.reply}</label>
+								<label style="color: #dce4ea;">参考答案：{$vb.answer}</label>
+								<label>
+									<span style="color:red;">此题得分</span>
+									<if condition="$exam['status'] eq 1">
+									<input type="text" name="subject_score" data-id="{$vb.id}" placeholder="请输入分值">分
+										<else/>
+										<input style="color: #3498db;" type="text" name="subject_score" data-id="{$vb.id}" value="{$vb.score}" readonly>分
+									</if>
+								</label>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				</if>
+			</fieldset>
+			<div class="form-actions">
+				<a class="btn" href="javascript:history.back(-1);">返回</a>
+				<if condition="$paper['subject'] gt 0 && $exam['status'] eq 1">
+					<input type="hidden" id="examId" value="{$exam.id}">
+					<button type="button" id="butSubmit" class="btn btn-info">提交</button>
+				</if>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+	//提交审阅
+    $("#butSubmit").on('click',function () {
+        var sub_score = parseFloat($("#subScore").val());
+        var examId = $("#examId").val();
+        var questionArray = [];
+        $(".subject-question").find("input[name=subject_score]").each(function (i) {
+            questionArray[i] = {};
+            questionArray[i]['question_id'] = $(this).attr('data-id');
+            questionArray[i]['score'] = $(this).val();
+        });
+        if(questionArray.length > 0){
+            for(var j=0;j<questionArray.length;j++){
+                if(isNaN(questionArray[j]['score']) || questionArray[j]['score']== '' || questionArray[j]['score'] < 0){
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: "分值必须为大于等于0的数字！", time: 2});
+                    return;
+				}
+				if(parseFloat(questionArray[j]['score']) > sub_score){
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: "分值不能大于"+sub_score+"分！", time: 2});
+                    return;
+				}
+			}
+            $.ajax({
+                type:'POST',
+                url:'{:U("Exam/reading")}',
+                data:{exam_id:examId,scores:questionArray},
+                dataType:'json',
+                success:function (res) {
+                    if(res.status === 1){
+                        $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                        setTimeout(function(){
+                            location.href = res.url;
+                        },2000);
+                    }else{
+                        $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                    }
+                }
+            })
+		}
+    });
+</script>
+</body>
+</html>

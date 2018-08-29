@@ -1,0 +1,110 @@
+<admintpl file="header" />
+<style type="text/css">
+	.edui-default{
+		width:80%;
+	}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('Knowledge/banner')}">页面轮播图</a></li>
+		<li class="active"><a>轮播图编辑</a></li>
+	</ul>
+	<form id="formInfo" method="post" class="form-horizontal" enctype="multipart/form-data">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">标题</label>
+				<div class="controls">
+					<input type="text" style="width:400px;" name="name" id="name" required value="{$name}" placeholder="请输入标题"/>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">图片</label>
+				<div class="controls">
+					<input type="hidden" name="imgurl" id="thumb" value="{$imgurl|default=''}">
+					<a href="javascript:upload_one_image('图片上传','#thumb');">
+						<if condition="empty($imgurl)">
+							<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand"/>
+							<else />
+							<img src="{:sp_get_image_preview_url($imgurl)}" id="thumb-preview" width="135" style="cursor: hand"/>
+						</if>
+					</a>
+					<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">排序</label>
+				<div class="controls">
+					<input type="number" name="listorder" id="listorder" value="{$listorder}" style="width: 400px" placeholder="请输入序号">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">内容</label>
+				<div class="controls">
+					<script type="text/plain" id="content" name="content">{$content}</script>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$id}">
+			<button class="btn btn-success" type="button" id="butSubmit">{:L('SAVE')}</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/vue.js"></script>
+<script src="__PUBLIC__/js/content_addtop.js"></script>
+<script src="__PUBLIC__/js/define_my.js"></script>
+<script src="__PUBLIC__/js/artDialog/artDialog.js"></script>
+<script type="text/javascript">
+    //编辑器路径定义
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        Wind.use('validate','artDialog', function() {
+            //编辑器
+            editorcontent = new baidu.editor.ui.Editor();
+            editorcontent.render('content');
+            try {
+                editorcontent.sync();
+            } catch (err) {
+            }
+            //增加编辑器验证规则
+            jQuery.validator.addMethod('editorcontent', function() {
+                try {
+                    editorcontent.sync();
+                } catch (err) {
+                }
+                return editorcontent.hasContents();
+            });
+        });
+        ////-------------------------
+    });
+
+    $("#butSubmit").on('click',function () {
+        var dataValues = $('#formInfo').serialize();
+        $.ajax({
+            type:'POST',
+            url:'{:U("Knowledge/banneredit_post")}',
+            data:dataValues,
+            dataType:'json',
+            success:function (res) {
+                if(res.status === 1){
+                    $.dialog({id: 'popup', lock: true,icon:"succeed", content: res.info, time: 2});
+                    setTimeout(function(){
+                        location.href='{:U("Admin/Knowledge/banner")}';
+                    },2000);
+                }else{
+                    $.dialog({id: 'popup', lock: true,icon:"warning", content: res.info, time: 2});
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>
